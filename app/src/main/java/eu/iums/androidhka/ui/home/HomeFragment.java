@@ -16,6 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 
@@ -30,45 +39,34 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    private TextView textView;
-    private Button btnToggleLocationService;
-
-    private boolean isLocationServiceRunning;
+    private MapView mapView;
+    private MapboxMap map;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Mapbox.getInstance(this.requireContext(), getString(R.string.mapbox_access_token));
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        this.homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        this.textView = root.findViewById(R.id.text_home);
-        this.btnToggleLocationService = root.findViewById(R.id.btnToggleLocationService);
+        this.mapView = root.findViewById(R.id.mapView);
+        //this.mapView.onCreate(savedInstanceState);
 
-        this.isLocationServiceRunning = false;
-
-        this.btnToggleLocationService.setOnClickListener(view -> {
-            if (!this.isLocationServiceRunning) {
-                this.startForegroundService();
-
-                this.btnToggleLocationService.setText("Aufzeichnung Stoppen");
-            } else {
-                this.stopForegroundService();
-
-                this.btnToggleLocationService.setText("Aufzeichnung Starten");
-            }
+        this.mapView.getMapAsync(map -> {
+            this.map = map;
+            this.map.setStyle(Style.OUTDOORS, new Style.OnStyleLoaded() {
+                @Override public void onStyleLoaded(@NonNull Style style) {
+                }
+            });
         });
-
-        /*homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-        String infoText = "...";
-
-        textView.setText(infoText);*/
 
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        this.mapView.onStart();
     }
 
     @Override
@@ -81,17 +79,29 @@ public class HomeFragment extends Fragment {
                 startLocationListener();
             }
         });
+
+        this.mapView.onResume();
     }
 
-    private void startForegroundService() {
+    @Override
+    public void onPause() {
+        super.onPause();
 
-
-        this.isLocationServiceRunning = true;
+        this.mapView.onPause();
     }
 
-    private void stopForegroundService() {
+    @Override
+    public void onStop() {
+        super.onStop();
 
-        this.isLocationServiceRunning = false;
+        this.mapView.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        this.mapView.onDestroy();
     }
 
     @SuppressLint("MissingPermission")
@@ -101,7 +111,7 @@ public class HomeFragment extends Fragment {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                textView.setText(String.format("Lat: %f, Lon: %f", location.getLatitude(), location.getLongitude()));
+                setMapPosition(location.getLatitude(), location.getLongitude());
             }
 
             @Override
@@ -111,5 +121,19 @@ public class HomeFragment extends Fragment {
         };
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, locationListener);
+    }
+
+    private void setMapPosition(double lat, double lon) {
+        if (this.map != null) {
+            this.map.setCameraPosition(new CameraPosition.Builder()
+                    .zoom(12)
+                    .target(new LatLng(lat, lon))
+                    .tilt(9)
+                    .build());
+
+            this.map.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, lon))
+                    .title("Koordinaten: " + lat + " ; " + lon));
+        }
     }
 }

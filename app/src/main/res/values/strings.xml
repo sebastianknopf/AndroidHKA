@@ -6,4 +6,6 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="str_next">Weiter</string>
+
+    <string name="mapbox_access_token">pk.eyJ1IjoibWljaGFrMTk4OSIsImEiOiJja3ZsODI4ancwbTR0MnZ1Z2pxMGlwaGd3In0.fpnMuRZIQArKs5mXlhU6Pw</string>
 </resources>

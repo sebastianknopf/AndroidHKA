@@ -41,7 +41,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-
-
     implementation 'com.nabinbhandari.android:permissions:3.8'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.0'
 }
