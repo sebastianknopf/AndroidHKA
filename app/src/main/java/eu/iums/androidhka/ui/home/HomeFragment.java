@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         this.mapView = root.findViewById(R.id.mapView);
-        //this.mapView.onCreate(savedInstanceState);
 
         this.mapView.getMapAsync(map -> {
             this.map = map;
@@ -112,6 +111,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 setMapPosition(location.getLatitude(), location.getLongitude());
+                homeViewModel.addCoordinatePoint(location.getLatitude(), location.getLongitude());
             }
 
             @Override

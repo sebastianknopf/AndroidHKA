@@ -43,4 +43,9 @@ dependencies {
 
     implementation 'com.nabinbhandari.android:permissions:3.8'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.0'
+
+    def room_version = "2.3.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }
