@@ -64,6 +64,19 @@
         android:layout_height="wrap_content"
         android:text="Nachricht absenden" />
 
+    <EditText
+        android:id="@+id/edtUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOpenUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/str_open"
+        android:background="@color/red"
+        android:onClick="openUrl"/>
+
     <TextView
         android:id="@+id/txtMessage"
         android:layout_width="match_parent"

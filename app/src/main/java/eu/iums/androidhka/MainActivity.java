@@ -2,6 +2,8 @@ package eu.iums.androidhka;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = edtMessage.getText().toString();
                 txtMessage.setText(message);
+
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putExtra(Constants.MESSAGE, message);
+
+                startActivity(intent);
             }
         });
     }
@@ -45,5 +52,16 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         Log.i("TAG", "onPause!");
+    }
+
+    public void openUrl(View view)
+    {
+        EditText editText = this.findViewById(R.id.edtUrl);
+        String url = editText.getText().toString();
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent browserChooser = Intent.createChooser(browserIntent, "Wähle einen Browser");
+
+        startActivity(browserChooser);
     }
 }
