@@ -64,4 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(browserChooser);
     }
+
+    public void openDepartures(View view)
+    {
+        Intent intent = new Intent(this, DepartureActivity.class);
+        this.startActivity(intent);
+    }
 }

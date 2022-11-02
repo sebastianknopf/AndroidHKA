@@ -77,6 +77,14 @@
         android:background="@color/red"
         android:onClick="openUrl"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOpenDepartures"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/str_open"
+        android:background="@color/red"
+        android:onClick="openDepartures"/>
+
     <TextView
         android:id="@+id/txtMessage"
         android:layout_width="match_parent"
