@@ -70,4 +70,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DepartureActivity.class);
         this.startActivity(intent);
     }
+
+    public void openMap(View view)
+    {
+        Intent intent = new Intent(this, MapActivity.class);
+        this.startActivity(intent);
+    }
 }

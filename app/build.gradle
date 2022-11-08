@@ -35,6 +35,8 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'org.osmdroid:osmdroid-android:6.1.0'
+    implementation 'com.nabinbhandari.android:permissions:3.8'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

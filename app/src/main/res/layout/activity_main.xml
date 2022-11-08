@@ -85,6 +85,14 @@
         android:background="@color/red"
         android:onClick="openDepartures"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOpenMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Karte"
+        android:background="@color/red"
+        android:onClick="openMap" />
+
     <TextView
         android:id="@+id/txtMessage"
         android:layout_width="match_parent"
