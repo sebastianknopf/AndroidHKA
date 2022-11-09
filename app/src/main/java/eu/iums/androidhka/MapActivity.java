@@ -24,6 +24,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -47,6 +48,21 @@ public class MapActivity extends AppCompatActivity {
         Permissions.check(this, permissions, null, null, new PermissionHandler() {
             @Override
             public void onGranted() {
+                setupMapView();
+            }
+
+            @Override
+            public void onDenied(Context context, ArrayList<String> deniedPermissions) {
+                super.onDenied(context, deniedPermissions);
+
+                if (deniedPermissions.size() == 1)
+                {
+                    String permission = deniedPermissions.get(0);
+                    if (permission.equals(Manifest.permission.MANAGE_EXTERNAL_STORAGE))
+                    {
+                        setupMapView();
+                    }
+                }
             }
         });
 
@@ -65,6 +81,25 @@ public class MapActivity extends AppCompatActivity {
         mapController.setZoom(14.0);
         mapController.setCenter(startPoint);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        this.mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        this.mapView.onPause();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void setupMapView()
+    {
         // Aufgabe 3
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -96,20 +131,7 @@ public class MapActivity extends AppCompatActivity {
 
         this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        this.mapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        this.mapView.onPause();
     }
 
     private String getMapServerAuthorizationString(String username, String password)
